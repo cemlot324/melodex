@@ -3,19 +3,16 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { User } from 'lucide-react'
-import { SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs"
+import { Music, User } from 'lucide-react'
 
-export default function LandingPage() {
-  const { isSignedIn } = useUser()
-
+export function LandingPageComponent() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo4.svg" alt="Melodex Logo" width={50} height={24} />
-            <span className="text-xl font-bold"></span>
+            <Music className="h-6 w-6" />
+            <span className="text-xl font-bold">MusicTrack</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="/" className="text-sm font-medium hover:text-primary">
@@ -29,27 +26,10 @@ export default function LandingPage() {
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
-            {isSignedIn ? (
-              <>
-                <Link href="/dashboard">
-                  <Button variant="outline" size="sm">
-                    Dashboard
-                  </Button>
-                </Link>
-                <SignOutButton>
-                  <Button variant="outline" size="sm">
-                    Sign out
-                  </Button>
-                </SignOutButton>
-                <UserButton afterSignOutUrl="/" />
-              </>
-            ) : (
-              <SignInButton>
-                <Button variant="outline" size="sm">
-                  Log in
-                </Button>
-              </SignInButton>
-            )}
+            <Button variant="outline" size="sm">
+              Log in
+            </Button>
+            <User className="h-8 w-8 text-gray-500" />
           </div>
         </div>
       </header>
@@ -64,7 +44,7 @@ export default function LandingPage() {
             </div>
             <div className="relative h-64 md:h-96">
               <Image
-                src="/hero.png"
+                src="/placeholder.svg?height=600&width=600"
                 alt="Person listening to music"
                 layout="fill"
                 objectFit="contain"
@@ -77,11 +57,11 @@ export default function LandingPage() {
       <footer className="border-t">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Image src="/logo4.svg" alt="Melodex Logo" width={24} height={24} />
-            <span className="text-xl font-bold"></span>
+            <Music className="h-6 w-6" />
+            <span className="text-xl font-bold">MusicTrack</span>
           </div>
           <p className="text-sm text-gray-500 mt-4 md:mt-0">
-            © {new Date().getFullYear()} Melodex. All rights reserved.
+            © {new Date().getFullYear()} MusicTrack. All rights reserved.
           </p>
         </div>
       </footer>

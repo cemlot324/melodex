@@ -1,0 +1,68 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // or your preferred database
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  songs         Song[]    // Songs added by the user
+  ratings       Rating[]  // User's ratings
+  listens       Listen[]  // User's listening history
+  wishlist      Song[]    @relation("Wishlist")
+}
+
+model Song {
+  id            String    @id @default(cuid())
+  title         String
+  artist        String
+  albumName     String?
+  coverImage    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  addedBy       User      @relation(fields: [userId], references: [id])
+  userId        String
+  ratings       Rating[]
+  listens       Listen[]
+  wishedBy      User[]    @relation("Wishlist")
+
+  @@index([userId])
+}
+
+model Rating {
+  id            String    @id @default(cuid())
+  value         Float     // Rating value (e.g., 1-5)
+  comment       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  song          Song      @relation(fields: [songId], references: [id])
+  songId        String
+
+  @@unique([userId, songId]) // One rating per song per user
+  @@index([userId])
+  @@index([songId])
+}
+
+model Listen {
+  id            String    @id @default(cuid())
+  duration      Int       // Duration in seconds
+  startedAt     DateTime  @default(now())
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  song          Song      @relation(fields: [songId], references: [id])
+  songId        String
+
+  @@index([userId])
+  @@index([songId])
+}
